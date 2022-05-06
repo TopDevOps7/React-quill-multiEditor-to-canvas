@@ -1,0 +1,49 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+.quill_container .d-flex {
+  justify-content: center;
+}
+.toolbar-item {
+  padding: 2px 5px;
+  margin-left: 10px;
+}
+.quill_container {
+  width: 500px !important;
+}
+.d-flex {
+  display: flex;
+  justify-content: space-around;
+}
+#canvas_div button {
+  margin: 20px;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  background-color: green;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+#canvas_container {
+  margin-top: 10px;
+  border: 1px solid grey;
+  height: 660px;
+  width: 470px;
+}
+.ql-container.ql-snow {
+  min-height: 200px !important;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+.top {
+  justify-content: start;
+}
+.center {
+  justify-content: center;
+}
+.bottom {
+  justify-content: end;
+}
