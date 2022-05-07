@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 import "./FormikQuill";
 import { FormikQuill } from "./FormikQuill";
-import IconTop from "./Icons/IconTop";
-import IconMiddle from "./Icons/IconMiddle";
-import IconBottom from "./Icons/IconBottom";
 import $ from "jquery";
 import { fabric } from "fabric";
 
@@ -18,6 +15,7 @@ export default function App() {
     if (localStorage.getItem("status") === "load") {
       setVAlign(() => JSON.parse(localStorage.getItem("align")));
       setContent(() => JSON.parse(localStorage.getItem("content")));
+
       let canvas = new fabric.Canvas("canvas", {
         top: 0,
         left: 0,
@@ -36,14 +34,12 @@ export default function App() {
     }
   }, []);
 
-  const onChange = (name, editor, ref) => {
+  const onChange = (id, name, editor, ref) => {
     if ($(`#${name} .ql-container`).height() > 200) {
-      ref.current.getEditor().setContents(content[name.split("-")[1] - 1]);
+      ref.current.getEditor().setContents(content[id]);
     } else {
       setContent((item) =>
-        item.map((cont, i) =>
-          i === name.split("-")[1] - 1 ? editor.getContents().ops : cont
-        )
+        item.map((cont, i) => (i === id ? editor.getContents().ops : cont))
       );
     }
   };
@@ -64,7 +60,6 @@ export default function App() {
     });
     canvas.clear();
     let line_exp = /\n/;
-    // console.log(JSON.stringify(content));
     let canvas_items = [];
     let fontsize_list = {
       normal: 14,
@@ -153,7 +148,6 @@ export default function App() {
               t_box[t_Idx].align = "left";
               if (lines[lines.length - 1].length === 0)
                 t_box[t_Idx].lines.push(str);
-              // else if (lines[0].length !== 0)
               else
                 t_box[t_Idx].lines.push(
                   str.slice(0, -lines[lines.length - 1].length)
@@ -257,20 +251,19 @@ export default function App() {
     canvas.renderAll();
     let canvasJson = canvas.toJSON();
     localStorage.setItem("canvasJson", JSON.stringify(canvasJson));
+    console.log(JSON.stringify(canvasJson));
   };
 
   const onLoad = () => {
     localStorage.setItem("status", "load");
-    setVAlign(() => JSON.parse(localStorage.getItem("align")));
-    setContent(() => JSON.parse(localStorage.getItem("content")));
     location.reload();
   };
 
   const alignText = (type, index) => {
-    $(`#editor-${index + 1} .ql-container.ql-snow`).removeClass("top");
-    $(`#editor-${index + 1} .ql-container.ql-snow`).removeClass("center");
-    $(`#editor-${index + 1} .ql-container.ql-snow`).removeClass("bottom");
-    $(`#editor-${index + 1} .ql-container.ql-snow`).addClass(type);
+    $(`#editor-${index} .text-editor`).removeClass("top");
+    $(`#editor-${index} .text-editor`).removeClass("center");
+    $(`#editor-${index} .text-editor`).removeClass("bottom");
+    $(`#editor-${index} .text-editor`).addClass(type);
     setVAlign((aligns) =>
       aligns.map((align, i) => (i === index ? type : align))
     );
@@ -279,12 +272,13 @@ export default function App() {
     <div className="App">
       <div className="d-flex">
         <div className="quill_container">
-          {["editor-1", "editor-2", "editor-3"].map((name, index) => (
+          {["editor-0", "editor-1", "editor-2"].map((name, index) => (
             <div id={name} key={name}>
               <FormikQuill
                 id={index}
                 name={name}
                 value={value}
+                align={vAlign[index]}
                 onChange={onChange}
                 onChangeAlign={alignText}
                 onBlur={onBlur}

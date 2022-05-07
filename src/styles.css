@@ -38,12 +38,12 @@
   display: flex;
   flex-direction: column;
 }
-.top {
+.text-editor.top .ql-container.ql-snow {
   justify-content: start;
 }
-.center {
+.text-editor.center .ql-container.ql-snow {
   justify-content: center;
 }
-.bottom {
+.text-editor.bottom .ql-container.ql-snow {
   justify-content: end;
 }

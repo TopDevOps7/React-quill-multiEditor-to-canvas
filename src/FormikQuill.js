@@ -4,13 +4,12 @@ import "react-quill/dist/quill.snow.css";
 import IconTop from "./Icons/IconTop";
 import IconMiddle from "./Icons/IconMiddle";
 import IconBottom from "./Icons/IconBottom";
-// import VisibilityIcon from "@material-ui/icons/Visibility";
-// import $ from "jquery";
 
 export const FormikQuill = ({
   id,
   name,
   value,
+  align,
   onChange,
   onChangeAlign,
   onBlur,
@@ -21,12 +20,9 @@ export const FormikQuill = ({
       localStorage.getItem("status") === "load" &&
       localStorage.getItem("content") !== null
     ) {
-      console.log(localStorage.getItem("status"));
       quillRef.current
         .getEditor()
-        .setContents(
-          JSON.parse(localStorage.getItem("content"))[name.split("-")[1] - 1]
-        );
+        .setContents(JSON.parse(localStorage.getItem("content"))[id]);
     }
   }, []);
   const CustomToolbar = () => (
@@ -67,7 +63,7 @@ export const FormikQuill = ({
   );
 
   const handleChange = (e, editor) => {
-    onChange(name, editor, quillRef);
+    onChange(id, name, editor, quillRef);
   };
 
   const handleBlur = () => {
@@ -99,7 +95,7 @@ export const FormikQuill = ({
 
   return (
     <>
-      <div className="text-editor">
+      <div className={`text-editor ${align}`}>
         {CustomToolbar(id)}
         <ReactQuill
           ref={quillRef}
