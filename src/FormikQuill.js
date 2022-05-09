@@ -10,6 +10,8 @@ export const FormikQuill = ({
   name,
   value,
   align,
+  width,
+  height,
   onChange,
   onChangeAlign,
   onBlur,
@@ -99,7 +101,7 @@ export const FormikQuill = ({
         {CustomToolbar(id)}
         <ReactQuill
           ref={quillRef}
-          style={{ backgroundColor: "white" }}
+          style={{ backgroundColor: "white", width: width, height: height }}
           theme="snow"
           defaultValue={value}
           onChange={(e, delta, source, editor) => {
