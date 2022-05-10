@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
-import { fabric } from "fabric";
 import { FormikQuill } from "./FormikQuill";
 import { Converter } from "./Converter";
-// import { useDispatch } from "react-redux";
-// // import { saveJson } from "./redux/actions/home";
-// import { saveJson } from "./redux/actions/home";
+import { useDispatch } from "react-redux";
+import { saveJson } from "./redux/actions/home";
 
-export const QuillContainer = ({
-  width,
-  height,
-  margin,
-  count,
-  exportJson,
-}) => {
+export const QuillContainer = ({ width, height, margin, count, exportJson }) => {
   const [value, setValue] = useState("");
   const [vAlign, setVAlign] = useState([]);
   const [quillnames, setQuillNames] = useState([]);
   const [content, setContent] = useState([]);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let aligns = [];
@@ -36,23 +28,16 @@ export const QuillContainer = ({
       setVAlign(() => JSON.parse(localStorage.getItem("align")));
       setContent(() => JSON.parse(localStorage.getItem("content")));
     } else {
-      if (localStorage.getItem("align") === null)
-        localStorage.setItem("align", JSON.stringify(vAlign));
-      if (localStorage.getItem("content") === null)
-        localStorage.setItem("content", JSON.stringify(content));
+      if (localStorage.getItem("align") === null) localStorage.setItem("align", JSON.stringify(vAlign));
+      if (localStorage.getItem("content") === null) localStorage.setItem("content", JSON.stringify(content));
     }
   }, []);
 
   const onChange = (id, name, editor, ref) => {
-    if (
-      $(`#${name} .ql-container`).height() >
-      (height - margin * (count - 1)) / count
-    ) {
+    if ($(`#${name} .ql-container`).height() > (height - margin * (count - 1)) / count) {
       ref.current.getEditor().setContents(content[id]);
     } else {
-      setContent((item) =>
-        item.map((cont, i) => (i === id ? editor.getContents().ops : cont))
-      );
+      setContent((item) => item.map((cont, i) => (i === id ? editor.getContents().ops : cont)));
     }
   };
   const onBlur = () => {};
@@ -63,7 +48,7 @@ export const QuillContainer = ({
     localStorage.setItem("status", "save");
     let canvasJson = Converter(content, vAlign, width, height, count, margin);
     exportJson(canvasJson);
-    // dispatch(saveJson(canvasJson));
+    dispatch(saveJson(canvasJson));
   };
 
   const onLoad = () => {
@@ -76,9 +61,7 @@ export const QuillContainer = ({
     $(`#editor-${index} .text-editor`).removeClass("center");
     $(`#editor-${index} .text-editor`).removeClass("bottom");
     $(`#editor-${index} .text-editor`).addClass(type);
-    setVAlign((aligns) =>
-      aligns.map((align, i) => (i === index ? type : align))
-    );
+    setVAlign((aligns) => aligns.map((align, i) => (i === index ? type : align)));
   };
   return (
     <div className="quill_container" style={{ width: width }}>

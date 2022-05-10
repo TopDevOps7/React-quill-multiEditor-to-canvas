@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 // import { FormikQuill } from "./FormikQuill";
 import { QuillContainer } from "./QuillContainer";
 import { CanvasContainer } from "./CanvasContainer";
-// import { Provider } from "react-redux";
-// import { store } from "./redux/store";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 // import $ from "jquery";
 // import { fabric } from "fabric";
 
@@ -32,26 +32,22 @@ export default function App() {
 
   return (
     <div className="App">
-      {/* <Provider store={store}> */}
-      <div className="d-flex">
-        <div className="quill_container">
-          <QuillContainer
-            width={width ? width : 450}
-            height={height ? height : 660}
-            margin={margin ? margin : 30}
-            count={count ? count : 3}
-            exportJson={exportJson}
-          />
+      <Provider store={store}>
+        <div className="d-flex">
+          <div className="quill_container">
+            <QuillContainer
+              width={width ? width : 450}
+              height={height ? height : 660}
+              margin={margin ? margin : 30}
+              count={count ? count : 3}
+              exportJson={exportJson}
+            />
+          </div>
+          <div id="canvas_div">
+            <CanvasContainer width={width ? width : 450} height={height ? height : 660} json={canvasJson} />
+          </div>
         </div>
-        <div id="canvas_div">
-          <CanvasContainer
-            width={width ? width : 450}
-            height={height ? height : 660}
-            json={canvasJson}
-          />
-        </div>
-      </div>
-      {/* </Provider> */}
+      </Provider>
     </div>
   );
 }
